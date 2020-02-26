@@ -53,7 +53,7 @@ class _RegisterState extends State<Register> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (val) => val.isEmpty ? 'Enter an email' : null,
                       onChanged: (val) {
-                        setState(() => email = val);
+                        setState(() => email = val.trimRight());
                       },
                     ),
                     SizedBox(height: 20.0),
@@ -65,7 +65,7 @@ class _RegisterState extends State<Register> {
                           ? 'Enter a password 6+ chars long'
                           : null,
                       onChanged: (val) {
-                        setState(() => password = val);
+                        setState(() => password = val.trimRight());
                       },
                     ),
                     SizedBox(height: 20.0),
@@ -78,6 +78,7 @@ class _RegisterState extends State<Register> {
                         onPressed: () async {
                           setState(() => loading = true);
                           if (_formKey.currentState.validate()) {
+                            print("Register: $email, $password,");
                             dynamic result = await _auth
                                 .registerWithEmailAndPassword(email, password);
                             if (result == null) {

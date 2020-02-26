@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pushapp/models/brew.dart';
 import 'package:pushapp/models/user.dart';
 
@@ -8,14 +9,20 @@ class DatabaseService {
   DatabaseService({this.uid});
 
   // collection reference
-  final CollectionReference brewCollection =
-      Firestore.instance.collection('brews');
+  final CollectionReference brewCollection = Firestore.instance.collection('brews');
 
-  Future updateUserData(String sugar, String name, int strength) async {
+  Future updateUserData({String sugar, String name, int strength, String token}) async {
     return await brewCollection.document(uid).setData({
       'sugars': sugar,
       'name': name,
       'strength': strength,
+      'token': token,
+    });
+  }
+
+  Future updateUserToken({String token}) async {
+    return await brewCollection.document(uid).updateData({
+      'token': token
     });
   }
 
@@ -26,6 +33,7 @@ class DatabaseService {
         name: doc.data['name'] ?? '',
         strength: doc.data['strength'] ?? 0,
         sugars: doc.data['sugars'] ?? '0',
+        token: doc.data['token'] ?? '0',
       );
     }).toList();
   }
@@ -37,6 +45,7 @@ class DatabaseService {
       sugars: snapshot.data['sugars'],
       name: snapshot.data['name'],
       strength: snapshot.data['strength'],
+      token: snapshot.data['token'],
     ); 
   }
 

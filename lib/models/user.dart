@@ -8,6 +8,7 @@ class UserData {
   final String name;
   final String sugars;
   final int strength;
+  final String token;
 
-  UserData({this.uid, this.name, this.sugars, this.strength});
+  UserData({this.uid, this.name, this.sugars, this.strength, this.token});
 }
