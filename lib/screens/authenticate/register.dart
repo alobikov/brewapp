@@ -33,11 +33,15 @@ class _RegisterState extends State<Register> {
               title: Text('Register to Push App'),
               actions: <Widget>[
                 FlatButton.icon(
-                    onPressed: () {
-                      widget.toggleView();
-                    },
-                    icon: Icon(Icons.person),
-                    label: Text('Sign in')),
+                  onPressed: () {
+                    widget.toggleView();
+                  },
+                  icon: Icon(Icons.person, color: Colors.white),
+                  label: Text(
+                    'Sign in',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ],
             ),
             body: Container(

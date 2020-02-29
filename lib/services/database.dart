@@ -26,6 +26,12 @@ class DatabaseService {
     });
   }
 
+  Future updateUserName({String name}) async {
+    return await brewCollection.document(uid).updateData({
+      'name': name
+    });
+  }
+
 // make brew list from snapshot
   List<Brew> _brewListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {

@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
+        title: 'Push App',
+        color: Colors.brown[600],
         home: Wrapper(),
         // home: Text('HI'),
       ),

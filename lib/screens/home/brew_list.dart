@@ -11,41 +11,28 @@ class BrewList extends StatefulWidget {
 }
 
 class _BrewListState extends State<BrewList> {
+  Messages _msg = Messages.instance;
   // final f = new DateFormat('yyyy-MM-dd hh:mm');
   final List<String> dateformat = [yyyy, '-', mm, '-', d, ' ', HH, ':', nn];
-  List<Message> _messages = <Message>[];
-  final _biggerFont = const TextStyle(fontSize: 20);
 
   @override
   initState() {
     print('initState() activated');
-    dbgBuildMessages().forEach((message) => _messages.add(message));
+    // dbgBuildMessages().forEach((message) => _messages.add(message));
   }
 
   @override
   Widget build(BuildContext context) {
-    final brews = Provider.of<List<Brew>>(context) ?? [];
-    brews.forEach((f) =>
-        print('Firestore Snapshot: ${f.name}, ${f.sugars}, ${f.strength}'));
-
-//     ListView.builder(
-//       itemCount: brews.length,
-//       itemBuilder: (context, index) {
-//         return BrewTile(brew: brews[index]);
-//       },
-//     );
-//   }
-// Widget _buildMessageList() {
-//     return
+    // final brews = Provider.of<List<Brew>>(context) ?? [];
 
     return ListView.separated(
       separatorBuilder: (context, index) => Divider(
         color: Colors.brown[400],
       ),
         padding: const EdgeInsets.all(16.0),
-        itemCount: 20,
+        itemCount: null == _msg.messages ? 0 : _msg.messages.length,
         itemBuilder: /*1*/ (context, i) {
-          return _buildRow(_messages[i]);
+          return _buildRow(_msg.messages[i]);
         });
   }
 
@@ -56,16 +43,16 @@ class _BrewListState extends State<BrewList> {
           Row(
             children: <Widget>[
               Expanded(
-                  child: Container(child: Text(message.from + ': ')), flex: 2),
+                  child: Container(child: Text('From Aleks: ')), flex: 4),
               Expanded(
                   child: Container(
                       child:
-                          Text(message.title, overflow: TextOverflow.ellipsis)),
+                          Text(message.title ?? 'Empty', overflow: TextOverflow.ellipsis)),
                   flex: 5),
               Expanded(
                   child: Container(
-                    child: Text(
-                        formatDate(message.timestamp, dateformat).toString()),
+                    child: Text('2020-20-02'),
+                        // formatDate(message.timestamp, dateformat).toString()),
                   ),
                   flex: 4),
             ],
@@ -73,7 +60,7 @@ class _BrewListState extends State<BrewList> {
           Row(
             children: <Widget>[
               Flexible(
-                  child: Text(message.body, overflow: TextOverflow.ellipsis)),
+                  child: Text(message.message ?? 'Empty', overflow: TextOverflow.ellipsis)),
             ],
           )
         ],

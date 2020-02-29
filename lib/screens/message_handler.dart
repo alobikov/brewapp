@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pushapp/models/message.dart';
 import 'package:pushapp/models/user.dart';
 import 'package:pushapp/screens/home/home.dart';
 import 'package:pushapp/services/database.dart';
@@ -13,38 +14,25 @@ class MessageHandling extends StatefulWidget {
 }
 
 class _MessageHandlingState extends State<MessageHandling> {
+  Messages _msg = Messages.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   @override
   void initState() {
-    // ...
+    _msg.messages = List<Message>();
     _saveDeviceToken();
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: ListTile(
-              title: Text(message['notification']['title']),
-              subtitle: Text(message['notification']['body']),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        );
+        _setMessage(message);
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
-        // TODO optional
+        _setMessage(message);
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-        // TODO optional
+        _setMessage(message);
       },
     );
   }
@@ -65,6 +53,18 @@ class _MessageHandlingState extends State<MessageHandling> {
       print('MessageHandling: ${e.toString()}');
     }
     print('MessageHandling ${user.uid}');
+  }
+
+  _setMessage(Map<String, dynamic> message) {
+    final notification = message['notification'];
+    final data = message['data'];
+    final String title = notification['title'];
+    final String body = notification['body'];
+    final String mMessage = data['message'];
+    setState(() {
+      Message m = Message(title: title, body: body, message: mMessage);
+      _msg.messages.add(m);
+    });
   }
 
   @override

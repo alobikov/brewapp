@@ -34,11 +34,15 @@ class _SignInState extends State<SignIn> {
               title: Text('Sign in to Push App'),
               actions: <Widget>[
                 FlatButton.icon(
-                    onPressed: () {
-                      widget.toggleView();
-                    },
-                    icon: Icon(Icons.person),
-                    label: Text('Register')),
+                  onPressed: () {
+                    widget.toggleView();
+                  },
+                  icon: Icon(Icons.person, color: Colors.white),
+                  label: Text(
+                    'Register',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ],
             ),
             body: Container(
